@@ -1,7 +1,13 @@
 package com.myorg.javacourse;
 
+
+
+/**
+ * This class describes the stock's content.
+ * @author TalKadosh
+ */
 public class Stock {
-	
+
 	private static final int BUY = 0, SELL = 1, REMOVE = 2, HOLD = 3;
 	private String symbol;
 	private int recommendation;
@@ -10,14 +16,28 @@ public class Stock {
 	private float bid;
 	private java.util.Date date;
 	
-	public Stock (String newSymbol, int newstockQuantity, float newBid, float newAsk, java.util.Date newDate, int newRecommendation){
-		this.symbol = newSymbol;
-		this.bid = newBid;
-		this.ask = newAsk;
-		this.date = newDate;
-		this.recommendation = newRecommendation;
-		this.stockQuantity = newstockQuantity;
+	
+	public Stock (String symbol, int stockQuantity, float bid, float ask, java.util.Date date, int recommendation){
+		this.symbol = symbol;
+		this.bid = bid;
+		this.ask = ask;
+		this.date = date;
+		this.recommendation = recommendation;
+		this.stockQuantity = stockQuantity;
 	}
+	public Stock(Stock stock){
+		this.symbol = new String (stock.getSymbol());
+		this.stockQuantity = stock.getStockQuantity();
+		this.bid = stock.getBid();
+		this.ask = stock.getAsk();
+		this.date = new java.util.Date(stock.getDate().getTime());
+		this.recommendation = stock.getRecommendation();
+	}
+	
+	/**
+	 * This method returns a string of the stock's details with a HTML code.
+	 * 
+	 */
 	
 	public String getHtmlDescription(){
 		return "<b>Stock symbol</b> : "+this.getSymbol()+", <b>ask</b> : "+this.getAsk()+", <b>Bid</b>: "+this.getBid()+", <b>Date</b>: "+this.getDateMonth()+"/"+this.getDateDay()+"/"+this.getDateYear(); 

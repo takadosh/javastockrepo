@@ -4,26 +4,8 @@ xmlns="http://java.sun.com/xml/ns/javaee"
 xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
-	<servlet>
-		<servlet-name>Tal</servlet-name>
-		<servlet-class>com.myorg.javacourse.TalServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Tal</servlet-name>
-		<url-pattern>/tal</url-pattern>
-	</servlet-mapping>
 
 <servlet>
-<servlet-name>TalNewServlet</servlet-name>
-<servlet-class>com.myorg.javacourse.TalNewServlet</servlet-class>
-</servlet>
-
-<servlet-mapping>
-<servlet-name>TalNewServlet</servlet-name>
-<url-pattern>/talnewservlet</url-pattern>
-</servlet-mapping>
-
-	<servlet>
 		<servlet-name>StockDetails</servlet-name>
 		<servlet-class>com.myorg.javacourse.StockDetailsServlet</servlet-class>
 	</servlet>
