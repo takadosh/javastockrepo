@@ -1,5 +1,8 @@
 package com.myorg.javacourse.model;
 
+import org.algo.model.PortfolioInterface;
+import org.algo.model.StockInterface;
+
 import com.myorg.javacourse.Stock;
 
 /**
@@ -8,7 +11,7 @@ import com.myorg.javacourse.Stock;
  * @author TalKadosh
  * 
  */
-public class Portfolio {
+public class Portfolio implements PortfolioInterface{
 	public enum ALGO_RECOMMENDATION{
 		BUY,SELL,REMOVE,HOLD;
 	}
@@ -19,9 +22,7 @@ public class Portfolio {
 	private int portfolioSize = 0;
 	private float balance;
 	
-	public Portfolio(String title){
-		this.title = title;
-		
+	public Portfolio(){
 		this.stocks = new Stock[MAX_PORTFOLIO_SIZE];
 	
 	}
@@ -31,6 +32,12 @@ public class Portfolio {
 		
 		for(int i = 0 ; i < pf.getPortfolioSize() ; i++)
 		this.addStock(new Stock(pf.stocks[i]));
+	}
+	public Portfolio(Stock[] stock){
+		this.title = new String();
+		this.portfolioSize = getPortfolioSize();
+		this.balance = getBalance();
+		this.stocks = stock;
 	}
 	
 	/**
@@ -263,6 +270,22 @@ public class Portfolio {
 	public float getBalance(){
 		return balance;
 	}
+	public StockInterface findStock(String symbol) {
+		for(int i = 0 ; i < portfolioSize ; i++)
+		{
+			if(symbol.equals(this.stocks[i].getSymbol()))
+					{
+					return this.stocks[i];
+					}
+				
+		}
+		return null;
+	}
+	public static int getMaxSize() {
+		// TODO Auto-generated method stub
+		return MAX_PORTFOLIO_SIZE;
+	}
+	
 }
 		
 	
