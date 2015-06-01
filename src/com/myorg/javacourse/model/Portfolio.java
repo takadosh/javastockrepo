@@ -35,9 +35,12 @@ public class Portfolio implements PortfolioInterface{
 	}
 	public Portfolio(Stock[] stock){
 		this.title = new String();
-		this.portfolioSize = getPortfolioSize();
+		this.portfolioSize = stock.length;
 		this.balance = getBalance();
-		this.stocks = stock;
+		this.stocks = new Stock[MAX_PORTFOLIO_SIZE];
+		
+		for(int i = 0 ; i < this.getPortfolioSize() ; i++)
+			this.stocks[i] = new Stock (stock[i]);
 	}
 	
 	/**
@@ -45,6 +48,7 @@ public class Portfolio implements PortfolioInterface{
 	 * 
 	 * @param stock
 	 */
+
 	public void addStock(Stock stock)
 	{
 		
