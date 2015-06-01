@@ -29,11 +29,9 @@ public class Stock implements StockInterface{
 		this.recommendation = recommendation;
 	}
 	public Stock(Stock stock){
-		this.symbol = new String (stock.getSymbol());
-		this.bid = stock.getBid();
-		this.ask = stock.getAsk();
-		this.date = new Date (stock.getDate().getTime());
-		this.recommendation = stock.getRecommendation();
+		this(new String(stock.getSymbol()), stock.getBid(), stock.getAsk(),
+				new Date(stock.getDate().getTime()), stock.getRecommendation());
+		this.stockQuantity = stock.getStockQuantity();
 	}
 	public Stock(){
 		this.symbol = new String();
