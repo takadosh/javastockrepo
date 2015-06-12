@@ -1,4 +1,4 @@
-package com.myorg.javacourse.servlet;
+package com.talka.javacourse.servlet;
 
 import java.io.IOException;
 
@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 
 import org.algo.service.ServiceManager;
 
-import com.myorg.javacourse.service.PortfolioManager;
+import com.talka.javacourse.service.PortfolioManager;
 @SuppressWarnings("serial")
 public class InitServlet extends javax.servlet.http.HttpServlet {
 

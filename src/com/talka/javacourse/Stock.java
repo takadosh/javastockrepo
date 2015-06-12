@@ -1,7 +1,7 @@
-package com.myorg.javacourse;
+package com.talka.javacourse;
 
-import com.myorg.javacourse.model.Portfolio;
-import com.myorg.javacourse.model.Portfolio.ALGO_RECOMMENDATION;
+import com.talka.javacourse.model.Portfolio;
+import com.talka.javacourse.model.Portfolio.ALGO_RECOMMENDATION;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

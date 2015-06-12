@@ -1,4 +1,4 @@
-package com.myorg.javacourse.service;
+package com.talka.javacourse.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,8 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.myorg.javacourse.model.Portfolio;
-import com.myorg.javacourse.Stock;
+import com.talka.javacourse.Stock;
+import com.talka.javacourse.exception.BalanceException;
+import com.talka.javacourse.exception.PortfolioFullException;
+import com.talka.javacourse.exception.StockNotExistException;
+import com.talka.javacourse.model.Portfolio;
 
 import org.algo.dto.PortfolioDto;
 import org.algo.dto.PortfolioTotalStatus;
@@ -126,7 +129,7 @@ public class PortfolioManager implements PortfolioManagerInterface {
 	 * Add stock to portfolio 
 	 */
 	@Override
-	public void addStock(String symbol) {
+	public void addStock(String symbol) throws PortfolioFullException{
 		Portfolio portfolio = (Portfolio) getPortfolio();
 
 		try {
@@ -136,10 +139,8 @@ public class PortfolioManager implements PortfolioManagerInterface {
 			Stock stock = fromDto(stockDto);
 			
 			//first thing, add it to portfolio.
-			portfolio.addStock(stock);   
-			//or:
-			//portfolio.addStock(stock);   
-
+			portfolio.addStock(stock);  
+		
 			//second thing, save the new stock to the database.
 			datastoreService.saveStock(toDto(portfolio.findStock(symbol)));
 			
@@ -277,8 +278,9 @@ public class PortfolioManager implements PortfolioManagerInterface {
 	 * A method that returns a new instance of Portfolio copied from another instance.
 	 * @param portfolio		Portfolio to copy.
 	 * @return a new Portfolio object with the same values as the one given.
+	 * @throws PortfolioFullException 
 	 */
-	public Portfolio duplicatePortfolio(Portfolio portfolio) {
+	public Portfolio duplicatePortfolio(Portfolio portfolio) throws PortfolioFullException {
 		Portfolio copyPortfolio = new Portfolio(portfolio);
 		return copyPortfolio;
 	}
@@ -296,9 +298,9 @@ public class PortfolioManager implements PortfolioManagerInterface {
 	 * Sell stock
 	 */
 	@Override
-	public void sellStock(String symbol, int quantity) throws PortfolioException {
+	public void sellStock(String symbol, int quantity) throws PortfolioException, StockNotExistException {
 		Portfolio portfolio = (Portfolio) getPortfolio();
-		portfolio.sellStock(symbol, quantity);
+			portfolio.sellStock(symbol, quantity);
 		flush(portfolio);
 	}
 
@@ -306,7 +308,7 @@ public class PortfolioManager implements PortfolioManagerInterface {
 	 * Remove stock
 	 */
 	@Override
-	public void removeStock(String symbol) { 
+	public void removeStock(String symbol) throws StockNotExistException{ 
 		Portfolio portfolio = (Portfolio) getPortfolio();
 		portfolio.removeStock(symbol);
 		flush(portfolio);
@@ -315,7 +317,7 @@ public class PortfolioManager implements PortfolioManagerInterface {
 	/**
 	 * update portfolio balance
 	 */
-	public void updateBalance(float value) { 
+	public void updateBalance(float value) throws BalanceException{ 
 		Portfolio portfolio = (Portfolio) getPortfolio();
 		portfolio.updateBalance(value);
 		flush(portfolio);

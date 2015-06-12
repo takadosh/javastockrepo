@@ -1,9 +1,12 @@
-package com.myorg.javacourse.model;
+package com.talka.javacourse.model;
 
 import org.algo.model.PortfolioInterface;
 import org.algo.model.StockInterface;
 
-import com.myorg.javacourse.Stock;
+import com.talka.javacourse.Stock;
+import com.talka.javacourse.exception.BalanceException;
+import com.talka.javacourse.exception.PortfolioFullException;
+import com.talka.javacourse.exception.StockNotExistException;
 
 /**
  * This class represents portfolio of stocks.
@@ -26,7 +29,7 @@ public class Portfolio implements PortfolioInterface{
 		this.stocks = new Stock[MAX_PORTFOLIO_SIZE];
 	
 	}
-	public Portfolio(Portfolio pf){
+	public Portfolio(Portfolio pf) throws PortfolioFullException{
 		this.portfolioSize = pf.getPortfolioSize();
 		this.title = new String(pf.getTitle());
 		
@@ -49,12 +52,11 @@ public class Portfolio implements PortfolioInterface{
 	 * @param stock
 	 */
 
-	public void addStock(Stock stock)
-	{
+	public void addStock(Stock stock) throws PortfolioFullException{
 		
-		if(this.getPortfolioSize() == (MAX_PORTFOLIO_SIZE-1))
+		if(this.getPortfolioSize() == (MAX_PORTFOLIO_SIZE))
 		{
-			System.out.println("Cant add a new stock, portfolio can have only " + MAX_PORTFOLIO_SIZE + " stocks");
+			throw new PortfolioFullException();
 		}
 		else
 		{
@@ -82,8 +84,7 @@ public class Portfolio implements PortfolioInterface{
 	 * 
 	 * @param symbol
 	 */
-	public boolean removeStock(String symbol)
-	{
+	public void removeStock(String symbol)throws StockNotExistException{
 		boolean flag = false;
 		int j = 0;
 		for(int i = 0 ; i < portfolioSize ; i++)
@@ -98,24 +99,23 @@ public class Portfolio implements PortfolioInterface{
 			}
 		}
 		if(flag == false)
-			return flag;
+			throw new StockNotExistException();
 		
-		while (j <= portfolioSize && portfolioSize > 0)
+		while (j < portfolioSize && portfolioSize > 0 && j != MAX_PORTFOLIO_SIZE-1)
 		{
 		stocks[j] = stocks[j+1];
 		j++;
 		}
 		portfolioSize--;
-		return flag;
 	}
 	/**
 	 * This method buys a specific stock and if it doesnt exist adds it to the portfolio.
 	 * 
 	 * @param stock
 	 * @param quantity
+	 * @throws PortfolioFullException 
 	 */
-	public boolean buyStock(Stock stock, int quantity)
-	{
+	public void buyStock(Stock stock, int quantity) throws PortfolioFullException, BalanceException{
 		boolean isOk = false;
 		boolean flag = false;
 		for(int i = 0 ; i < portfolioSize ; i++)
@@ -147,7 +147,7 @@ public class Portfolio implements PortfolioInterface{
 				{
 					if(quantity * stock.getAsk() > this.balance)
 					{
-						System.out.println("Not enough balance to complete purchase");
+						throw new BalanceException();/*System.out.println("Not enough balance to complete purchase");*/
 					}
 		
 					else
@@ -159,16 +159,18 @@ public class Portfolio implements PortfolioInterface{
 				}
 			}	
 	}
-		return isOk;
+		if(!isOk){
+			throw new PortfolioFullException();
+		}
 	}
 	/**
 	 * This method sells a specific stock by his symbol according to the given quantity.
 	 * 
 	 * @param symbol
 	 * @param quantity
+	 * @throws StockNotExistException 
 	 */
-	public boolean sellStock(String symbol, int quantity)
-	{
+	public void sellStock(String symbol, int quantity) throws StockNotExistException{
 		boolean flag = false;
 		int j = 0;
 		for(int i = 0 ; i < portfolioSize ; i++)
@@ -196,7 +198,9 @@ public class Portfolio implements PortfolioInterface{
 			this.stocks[j].setStockQuantity(0);
 			flag = true;
 		}
-		return flag;
+		if (!flag){
+			throw new StockNotExistException();
+		}
 	}
 	/**
 	 * This method returns the total value of portfolio's stocks.
@@ -243,9 +247,10 @@ public class Portfolio implements PortfolioInterface{
 	 * This method updates the balance by adding amount to the current balance.
 	 * @param amount
 	 */
-	public void updateBalance(float amount){
+	public void updateBalance(float amount) throws BalanceException{
+		
 		if(amount < 0 && this.balance + amount < 0){
-			System.out.println("this amount is illegal");
+			throw new BalanceException();
 		}
 		if(this.balance + amount >= 0){
 			this.balance += amount;
@@ -286,7 +291,6 @@ public class Portfolio implements PortfolioInterface{
 		return null;
 	}
 	public static int getMaxSize() {
-		// TODO Auto-generated method stub
 		return MAX_PORTFOLIO_SIZE;
 	}
 	
