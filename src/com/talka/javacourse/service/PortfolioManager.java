@@ -10,6 +10,7 @@ import java.util.Map;
 import com.talka.javacourse.Stock;
 import com.talka.javacourse.exception.BalanceException;
 import com.talka.javacourse.exception.PortfolioFullException;
+import com.talka.javacourse.exception.StockAlreadyExistsException;
 import com.talka.javacourse.exception.StockNotExistException;
 import com.talka.javacourse.model.Portfolio;
 
@@ -127,9 +128,10 @@ public class PortfolioManager implements PortfolioManagerInterface {
 
 	/**
 	 * Add stock to portfolio 
+	 * @throws StockAlreadyExistsException 
 	 */
 	@Override
-	public void addStock(String symbol) throws PortfolioFullException{
+	public void addStock(String symbol) throws PortfolioFullException, StockAlreadyExistsException{
 		Portfolio portfolio = (Portfolio) getPortfolio();
 
 		try {
@@ -279,8 +281,9 @@ public class PortfolioManager implements PortfolioManagerInterface {
 	 * @param portfolio		Portfolio to copy.
 	 * @return a new Portfolio object with the same values as the one given.
 	 * @throws PortfolioFullException 
+	 * @throws StockAlreadyExistsException 
 	 */
-	public Portfolio duplicatePortfolio(Portfolio portfolio) throws PortfolioFullException {
+	public Portfolio duplicatePortfolio(Portfolio portfolio) throws PortfolioFullException, StockAlreadyExistsException {
 		Portfolio copyPortfolio = new Portfolio(portfolio);
 		return copyPortfolio;
 	}

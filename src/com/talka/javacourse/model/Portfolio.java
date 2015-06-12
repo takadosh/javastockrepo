@@ -6,6 +6,7 @@ import org.algo.model.StockInterface;
 import com.talka.javacourse.Stock;
 import com.talka.javacourse.exception.BalanceException;
 import com.talka.javacourse.exception.PortfolioFullException;
+import com.talka.javacourse.exception.StockAlreadyExistsException;
 import com.talka.javacourse.exception.StockNotExistException;
 
 /**
@@ -29,7 +30,7 @@ public class Portfolio implements PortfolioInterface{
 		this.stocks = new Stock[MAX_PORTFOLIO_SIZE];
 	
 	}
-	public Portfolio(Portfolio pf) throws PortfolioFullException{
+	public Portfolio(Portfolio pf) throws PortfolioFullException, StockAlreadyExistsException{
 		this.portfolioSize = pf.getPortfolioSize();
 		this.title = new String(pf.getTitle());
 		
@@ -50,9 +51,10 @@ public class Portfolio implements PortfolioInterface{
 	 * This method adds a new stock to the stocks array in the portfolio.
 	 * 
 	 * @param stock
+	 * @throws StockAlreadyExistsException 
 	 */
 
-	public void addStock(Stock stock) throws PortfolioFullException{
+	public void addStock(Stock stock) throws PortfolioFullException, StockAlreadyExistsException{
 		
 		if(this.getPortfolioSize() == (MAX_PORTFOLIO_SIZE))
 		{
@@ -64,8 +66,7 @@ public class Portfolio implements PortfolioInterface{
 			{
 				if(stock.getSymbol().equals(stocks[i].getSymbol()))
 				{
-					System.out.println("This stock already exists");
-					return;
+					throw new StockAlreadyExistsException();
 				}
 			}
 				
@@ -114,8 +115,9 @@ public class Portfolio implements PortfolioInterface{
 	 * @param stock
 	 * @param quantity
 	 * @throws PortfolioFullException 
+	 * @throws StockAlreadyExistsException 
 	 */
-	public void buyStock(Stock stock, int quantity) throws PortfolioFullException, BalanceException{
+	public void buyStock(Stock stock, int quantity) throws PortfolioFullException, BalanceException, StockAlreadyExistsException{
 		boolean isOk = false;
 		boolean flag = false;
 		for(int i = 0 ; i < portfolioSize ; i++)
